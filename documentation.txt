@@ -1,0 +1,64 @@
+Game Structure - 1. Definitions
+                        i. Defining the variables needed.
+                        ii. Creating the game objects.
+                 2. Game Loop
+                        i.Updating the position of the game objects.
+                        ii.Checking for collisions.
+
+
+
+Raylib Functions Used:
+InitWindow(width,height, title) - initializes the window and the OpenGL context. It must be called before any other raylib functions.
+width: The width of the window in pixels.
+height: The height of the window in pixels.
+title: A text string displayed in the window title bar.
+
+
+CloseWindow() - closes the window and terminates the OpenGL context. It should be called at the very end of your program to clean up resources.
+
+
+WindowShouldClose() - checks if the user has attempted to close the window (by clicking the 'X' button or pressing the ESC key).
+It returns a boolean value (true or false).
+
+
+BeginDrawing() - prepares the canvas for rendering and clears the internal setup to start drawing a new frame.
+It must be called at the start of every frame within your main game loop.
+It sets up the internal state for 2D rendering.
+It prepares the back buffer for new drawing commands.
+It activates the target canvas (the screen by default).
+
+
+EndDrawing() - finishes frame rendering and copies the completed drawing to the screen.
+It must be called at the end of the drawing section, pairing directly with BeginDrawing().
+
+
+SetTargetFPS(int fps_no) - sets the target frame rate (frames per second) for your application.It controls how fast your game loop runs.
+Tells EndDrawing() how long to wait before starting the next frame.
+Stabilizes game physics and animations by keeping time steps consistent.
+Prevents your CPU and GPU from running at 100% capacity to render unnecessary frames.
+framerates tells the amount of time each frame gets.
+
+
+ClearBackground(struct color) - wipes the entire screen or canvas clean by filling it with a single, solid color.
+It is almost always the very first function called after BeginDrawing().
+color - The color you want the background to be. raylib provides many built-in color constants such as RAYWHITE, BLACK, BLUE, RED, BLANK (transparent), etc.
+
+
+
+Explanation:
+1. Game Window - The game window is like a blank canvas where we can draw our game objects.
+We need to specify the size of the window in terms of width and height.
+
+
+2. Co-Ordinate System - In Computer Graphics, unlike the high school mathematics we assume the coordinate system to start from the top-left corner of any window with the values (0,0).
+x value increases as we move towards right.
+y value decreases as we move downwards.
+
+
+3. Game Loop - Consists of three parts :
+i. Event Handling - We need to check for any events that occur in the game like quitting the game, clicking buttons in the game, keys pressed on the keyboards, etc.
+ii. Updating Positions - We update the positions of game objects(like blocks) based on the events that we identified.
+iii. Drawing Objects - Finally, we draw the objects based on their updated positions on the screen. This step uses the raylib's graphics functions to render the objects on to the display.
+
+
+4. Colors in raylib - raylib uses a Structure datatype called "struct color{r,g,b,a}" to provide colours to our canvas.
