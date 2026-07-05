@@ -3,7 +3,7 @@ int main()
 {
 //1. Setting-up the game loop
 
-    
+
     //Creating Game Window - InitWindow()
     InitWindow(300,600,"Tetris-Game");
     Color Grey={127,127,127,100};

@@ -8,7 +8,7 @@ Game Structure - 1. Definitions
 
 
 Raylib Functions Used:
-InitWindow(width,height, title) - initializes the window and the OpenGL context. It must be called before any other raylib functions.
+InitWindow(width,height,title) - initializes the window and the OpenGL context. It must be called before any other raylib functions.
 width: The width of the window in pixels.
 height: The height of the window in pixels.
 title: A text string displayed in the window title bar.
@@ -44,6 +44,14 @@ It is almost always the very first function called after BeginDrawing().
 color - The color you want the background to be. raylib provides many built-in color constants such as RAYWHITE, BLACK, BLUE, RED, BLANK (transparent), etc.
 
 
+DrawRectangle(posX,posY,width,height,color) - is a core 2D shape rendering function used to draw a flat, color-filled rectangle directly to the screen.
+It is primarily used for prototyping UI elements, health bars, background blocks, and basic game geometry.
+posX: The horizontal (X) pixel coordinate of the rectangle's top-left corner.
+posY: The vertical (Y) pixel coordinate of the rectangle's top-left corner.
+width:The width of the rectangle in pixels.height: The height of the rectangle in pixels.
+color:The color used to fill the rectangle (e.g., RED, BLUE, RAYWHITE).
+
+
 
 Explanation:
 1. Game Window - The game window is like a blank canvas where we can draw our game objects.
@@ -62,3 +70,107 @@ iii. Drawing Objects - Finally, we draw the objects based on their updated posit
 
 
 4. Colors in raylib - raylib uses a Structure datatype called "struct color{r,g,b,a}" to provide colours to our canvas.
+
+
+5. In Tetris, the gameplay area is a grid consisting of 20 rows and 10 columns.The rows are counted from top to bottom while the columns are counted from left to right.
+   To represent the grid, we will use a 2-Dimensional array where the unoccupied grid cells are represented with the value 0.
+   There are seven different colours used by the tetromino blocks and in our code, each color has its respective number(from 1-7) assigned to it (use of vectors). This is for the tetromino blocks that are already placed in the grid.
+   The tetromino block that is still being controlled by the player will not be reflected in the 2-D array(grid) and instead it will be stored and managed separately in the game logic.
+   We will be using OOPS concepts to implement the grid. And as we are using OOPS concepts, we will be declaring the class for the grid separately in a different header file and its implementation is done in the main cpp file.
+   Whenever we create multiple files(header files) for our projects, we use the preprocessive director(#pragma once) so that when the different header files are interconnected and when we try to include them in the main cpp file, there would be no redefinitive error thrown by the compiler.
+       i. The Files (Without Protection)
+       cpp// Position.h
+       struct Position {
+       int x;
+       int y;
+       };
+
+       // Player.h
+       #include "Position.h"
+
+       struct Player {
+       Position pos;
+       int health;
+       };
+
+       // main.cpp
+       #include "Player.h"
+       #include "Position.h" // Oops! Included directly again.
+
+       int main() {
+       Player hero;
+       return 0;
+       }
+
+       ii. What the Compiler Sees (The Failure) - Before compiling, the preprocessor copies and pastes the contents of the #include files directly into main.cpp.The expanded main.cpp file ends up looking like this to the compiler:
+       // From Player.h -> which included Position.h
+       struct Position {
+       int x;
+       int y;
+       };
+
+       struct Player {
+       Position pos;
+       int health;
+       };
+
+       // From the direct include of Position.h in main.cpp
+       struct Position {
+       int x;
+       int y;
+       }; // <--- ERROR! "Position" struct type redefinition
+
+       int main() {
+       Player hero;
+       return 0;
+       }
+       Because struct Position is pasted twice, the compiler panics with a redefinition error and halts the build.
+
+       The Solution: Using #pragma once.
+       i. The Fixed Header Filecpp// Position.h
+       #pragma once  // <--- The magic fix
+
+       struct Position {
+       int x;
+       int y;
+       };
+
+       ii. What the Compiler Sees Now (The Success) - When the preprocessor hits the second #include "Position.h" in main.cpp, it checks its internal list, sees that Position.h was already processed via Player.h, and completely ignores the second request.
+       The expanded main.cpp now looks clean and error-free:
+       // From Player.h (Position.h is allowed here)
+       struct Position {
+       int x;
+       int y;
+       };
+
+       struct Player {
+       Position pos;
+       int health;
+       };
+
+       // The direct include of Position.h is safely skipped by the preprocessor!
+
+       int main() {
+       Player hero;
+       return 0;
+       }
+       The program now compiles perfectly because struct Position is only defined a single time.
+
+
+6. The Golden Rules of Header Files:
+       i.Self-Containment - A header file must include everything it needs to compile successfully on its own. If Player uses a Position, Player.h must include Position.h.
+       ii.Hidden Dependencies - If someone else wants to use your Player.h file in a completely different part of the project later, they shouldn't have to guess that they also need to include Position.h first. It should just work automatically.
+       iii.By using #pragma once inside Position.h, you get the best of both worlds: Player.h can safely include it to satisfy its own needs, and main.cpp can safely include it without causing duplication errors.
+
+
+7. We use the header file to create/declare the required classes and in its respective ".cpp" file, we define the working of the methods,defining variables,etc.
+
+
+8. std::vector is one of the most important containers in C++. It is essentially a dynamic array—an array that can automatically grow or shrink as you add or remove elements.
+   the size starts at 0 and can grow as needed.
+   With a vector you simply keep adding elements.
+   eg:
+       std::vector<int> scores;
+       scores.push_back(10);
+       scores.push_back(20);
+       scores.push_back(30);
