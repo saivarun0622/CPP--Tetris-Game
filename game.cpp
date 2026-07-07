@@ -1,5 +1,6 @@
 #include<raylib.h>
 #include "grid/grid.h"  //2. Creating Grid
+#include "block/blocks.cpp" //3. Creating Blocks
 int main()
 {
 //1. Setting-up the game loop
@@ -13,7 +14,11 @@ int main()
     //2. Creating Grid
     GRID grid=GRID();
     grid.Print();
-    //2. Completed creating the grid
+    //2. Completed creating the Grid
+
+    //3. Creating Blocks
+    LBlock lblock = LBlock();
+    //3. Completed creating the Blocks
 
     //Creating infinite loop that runs until the user closes the window
     while (WindowShouldClose()==false)
@@ -21,7 +26,7 @@ int main()
         BeginDrawing();
         ClearBackground(DarkBlue);
         grid.Draw(); //2. Creating Grid
-
+        lblock.Draw();//3. Creating Blocks : L-Block
         EndDrawing();
     }
     
