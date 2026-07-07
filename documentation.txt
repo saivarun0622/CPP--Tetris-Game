@@ -174,3 +174,21 @@ iii. Drawing Objects - Finally, we draw the objects based on their updated posit
        scores.push_back(10);
        scores.push_back(20);
        scores.push_back(30);
+
+
+9. In Tetris, there are 7 different shpaed tetramino blocks and they are namely:
+       i. L-Shaped block
+       ii.J-Shaped block
+       iii.I-Shaped block
+       iv.O-Shaped block
+       v. S-Shaped block
+       vi.T-Shaped block
+       vii.Z-Shaped block
+each of these blocks are made of four cells/tiles and can be rotated in four different(except O-Shaped block) directions from their central axis respcetively.
+To represent the block, we imagine a box around each block that is big enough to fit in all the four different direction states of the tetramino block.
+The box imagined to contain the block is divided into a grid and we lable the top left corner as the origin.
+
+
+In C++, a map (std::map) is an associative container that stores elements as key-value pairs.
+Every key in a map must be unique, and each key maps to exactly one value. By default, std::map automatically sorts its keys in ascending order as they are inserted.
+It is part of the Standard Template Library (STL) and requires the <map> header.
