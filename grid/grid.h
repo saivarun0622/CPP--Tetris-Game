@@ -13,7 +13,6 @@ class GRID
     void Draw();
 
     private:
-    std::vector<Color> CellColors();
     int rows;
     int cols;
     int cellsize;

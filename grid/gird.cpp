@@ -2,8 +2,9 @@
 
 
 // Importing grid header file
-#include "grid.h"
 #include<iostream>
+#include "grid.h"
+#include "../block/colors.h"
 
 //Setting the number of rows and columns and size of each cell.
 GRID::GRID()
@@ -41,11 +42,12 @@ void GRID::Print()
 }
 
 //Returning the colours of the tetromino when requested/called
-std::vector<Color> GRID::CellColors()
-{
-    Color CYAN={0,255,255,255};
-    return {GRAY,GREEN,RED,ORANGE,YELLOW,PURPLE,CYAN,BLUE};
-}
+// std::vector<Color> GRID::CellColors()
+// {
+//     Color CYAN={0,255,255,255};
+//     return {GRAY,GREEN,RED,ORANGE,YELLOW,PURPLE,CYAN,BLUE};
+// }
+//Changed to global standalone files (created separate header and cpp files) for returning the colors as they would be used by multiple elements/classes and objects from different files.
 
 //Drawing Grid and Grid Cells
 void GRID::Draw()
