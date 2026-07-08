@@ -14,7 +14,7 @@ class LBlock : public BLOCK
         id=1;
         cells[0]={POSITION(0,2),POSITION(1,0),POSITION(1,1),POSITION(1,2)};
         cells[1]={POSITION(0,1),POSITION(1,1),POSITION(2,1),POSITION(2,2)};
-        cells[2]={POSITION(1,0),POSITION(1,1),POSITION(1,2),POSITION(2,1)};
+        cells[2]={POSITION(1,0),POSITION(1,1),POSITION(1,2),POSITION(2,0)};
         cells[3]={POSITION(0,0),POSITION(0,1),POSITION(1,1),POSITION(2,1)};
         
         //4. Moving the Blocks
@@ -32,7 +32,7 @@ class JBlock : public BLOCK
         id=2;
         cells[0]={POSITION(0,0),POSITION(1,0),POSITION(1,1),POSITION(1,2)};
         cells[1]={POSITION(0,1),POSITION(0,2),POSITION(1,1),POSITION(2,1)};
-        cells[2]={POSITION(0,1),POSITION(0,2),POSITION(1,1),POSITION(2,2)};
+        cells[2]={POSITION(1,0),POSITION(1,1),POSITION(1,2),POSITION(2,2)};
         cells[3]={POSITION(0,1),POSITION(1,1),POSITION(2,0),POSITION(2,1)};
         
         //4. Moving the Blocks
@@ -86,7 +86,7 @@ class SBlock : public BLOCK
         id=5;
         cells[0]={POSITION(0,1),POSITION(0,2),POSITION(1,0),POSITION(1,1)};
         cells[1]={POSITION(0,1),POSITION(1,1),POSITION(1,2),POSITION(2,2)};
-        cells[2]={POSITION(0,1),POSITION(1,2),POSITION(2,0),POSITION(2,1)};
+        cells[2]={POSITION(1,1),POSITION(1,2),POSITION(2,0),POSITION(2,1)};
         cells[3]={POSITION(0,0),POSITION(1,0),POSITION(1,1),POSITION(2,1)};
         
         //4. Moving the Blocks

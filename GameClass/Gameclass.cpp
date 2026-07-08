@@ -53,6 +53,8 @@ void GAME::ReadInput()
     case KEY_DOWN:
         MoveDown();
         break;
+    case KEY_R:
+        RotateBlock();
     }
 }
 
@@ -97,4 +99,13 @@ bool GAME::IsBlockOut()
         }
     }
     return false;
+}
+
+void GAME::RotateBlock()
+{
+    currentBlock.Rotate();
+    if(IsBlockOut())
+    {
+        currentBlock.UndoRotate();
+    }
 }

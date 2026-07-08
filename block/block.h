@@ -18,6 +18,10 @@ class BLOCK
     void Move(int rows, int columns);
     std::vector<POSITION> BlockPos();
 
+    //5.Rotating the Blocks
+    void Rotate();
+    void UndoRotate();
+
     private:
     int cellsize;
     int rotationstate;

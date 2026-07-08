@@ -22,4 +22,7 @@ class GAME
     std::vector<BLOCK> blocks;
     BLOCK currentBlock;
     BLOCK nextBlock;
+
+    //5.Rotating the Blocks
+    void RotateBlock();
 };

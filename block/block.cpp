@@ -44,3 +44,24 @@ std::vector<POSITION> BLOCK::BlockPos()
     }
     return movedTiles;
 }
+
+//5.Rotating the Blocks
+//Rotates the Block
+void BLOCK::Rotate()
+{
+    rotationstate++;
+    if(rotationstate==cells.size())
+    {
+        rotationstate=0;
+    }
+}
+
+//Undoes/Reverses the rotation of the Block
+void BLOCK::UndoRotate()
+{
+    rotationstate--;
+    if(rotationstate==-1)
+    {
+        rotationstate=cells.size()-1;
+    }
+}
