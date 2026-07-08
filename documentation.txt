@@ -52,6 +52,14 @@ width:The width of the rectangle in pixels.height: The height of the rectangle i
 color:The color used to fill the rectangle (e.g., RED, BLUE, RAYWHITE).
 
 
+GetKeyPressed() - The GetKeyPressed() function in raylib pulls the oldest keyboard action out of an internal input queue and returns its corresponding integer keycode (e.g., KEY_LEFT, KEY_SPACE, KEY_ENTER).
+If no keys were pressed during that specific frame, or if you have already read all the keys out of the queue, the function returns 0.
+If a player hits multiple keys incredibly fast inside a single frame (like hitting KEY_DOWN and KEY_RIGHT almost simultaneously), raylib captures both.
+The first time you call GetKeyPressed(), it returns the first key.
+If you call it a second time within the exact same frame, it pops out the next key.
+This makes it perfect for setups where you process commands inside a while loop.
+
+
 
 Explanation:
 1. Game Window - The game window is like a blank canvas where we can draw our game objects.
@@ -189,6 +197,21 @@ To represent the block, we imagine a box around each block that is big enough to
 The box imagined to contain the block is divided into a grid and we lable the top left corner as the origin.
 
 
-In C++, a map (std::map) is an associative container that stores elements as key-value pairs.
+10. In C++, a map (std::map) is an associative container that stores elements as key-value pairs.
 Every key in a map must be unique, and each key maps to exactly one value. By default, std::map automatically sorts its keys in ascending order as they are inserted.
 It is part of the Standard Template Library (STL) and requires the <map> header.
+
+
+11. Both the main grid and the grid that contains the block have the same origin of (0,0).
+So to move the tetramino blocks in the main grid, we need to move the sub grid that contains one of the seven tetramino blocks.
+
+
+12. To improve code organization and make it easier to manage in the future, we will create a game class to hold the grid and the block objects, as well as various mehtods.
+The game class will serve as a container for all the elements of our game such as the grid, current & next block, and the game state.
+It will also hold the methods that manage the game's logic such as Updating the block's position, checking for collisions,etc.
+By centralizing all the game's functionality within this class, it will be easier to understand,maintain and expand in future.
+Additionally, it will also improve code readability and reduce the risk of bugs by keeping related code together in one place.
+Overall, creating a game class will greatly improve the organization and structure of our codebase, making it easier to work with it in the future.
+
+
+13. push_back(element) - is used mainly with vectors and it is used to append the element at the end of the vector(dynamic array).
