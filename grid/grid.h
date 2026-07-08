@@ -12,6 +12,9 @@ class GRID
     void Print();
     void Draw();
 
+    //4. Moving the Blocks
+    bool IsCellOutside(int row,int column);
+
     private:
     int rows;
     int cols;

@@ -14,8 +14,16 @@ class BLOCK
     int id;
     std::map<int, std::vector<POSITION>>cells;
 
+    //4. Moving the Blocks
+    void Move(int rows, int columns);
+    std::vector<POSITION> BlockPos();
+
     private:
     int cellsize;
     int rotationstate;
     std::vector<Color> colors;
+
+    //4. Moving the Blocks
+    int rowOffset;
+    int columnOffset;
 };

@@ -61,3 +61,14 @@ void GRID::Draw()
         }
     }
 }
+
+//4. Moving the Blocks
+//Returns flase if the block is out of the main grid
+bool GRID::IsCellOutside(int row,int column)
+{
+    if(row>=0 && row<rows && column>=0 && column<cols)
+    {
+        return false;
+    }
+    return true;
+}

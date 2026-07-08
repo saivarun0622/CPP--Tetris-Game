@@ -16,6 +16,10 @@ class LBlock : public BLOCK
         cells[1]={POSITION(0,1),POSITION(1,1),POSITION(2,1),POSITION(2,2)};
         cells[2]={POSITION(1,0),POSITION(1,1),POSITION(1,2),POSITION(2,1)};
         cells[3]={POSITION(0,0),POSITION(0,1),POSITION(1,1),POSITION(2,1)};
+        
+        //4. Moving the Blocks
+        //Used this method in child class constructor to spawn the tetramino block from the middle of the main grid
+        Move(0,3);
     }
 };
 
@@ -30,6 +34,10 @@ class JBlock : public BLOCK
         cells[1]={POSITION(0,1),POSITION(0,2),POSITION(1,1),POSITION(2,1)};
         cells[2]={POSITION(0,1),POSITION(0,2),POSITION(1,1),POSITION(2,2)};
         cells[3]={POSITION(0,1),POSITION(1,1),POSITION(2,0),POSITION(2,1)};
+        
+        //4. Moving the Blocks
+        //Used this method in child class constructor to spawn the tetramino block from the middle of the main grid
+        Move(0,3);
     }
 };
 
@@ -44,6 +52,10 @@ class IBlock : public BLOCK
         cells[1]={POSITION(0,2),POSITION(1,2),POSITION(2,2),POSITION(3,2)};
         cells[2]={POSITION(2,0),POSITION(2,1),POSITION(2,2),POSITION(2,3)};
         cells[3]={POSITION(0,1),POSITION(1,1),POSITION(2,1),POSITION(3,1)};
+        
+        //4. Moving the Blocks
+        //Used this method in child class constructor to spawn the tetramino block from the middle of the main grid
+        Move(-1,3);
     }
 };
 
@@ -58,6 +70,10 @@ class OBlock : public BLOCK
         cells[1]={POSITION(0,0),POSITION(0,1),POSITION(1,0),POSITION(1,1)};
         cells[2]={POSITION(0,0),POSITION(0,1),POSITION(1,0),POSITION(1,1)};
         cells[3]={POSITION(0,0),POSITION(0,1),POSITION(1,0),POSITION(1,1)};
+        
+        //4. Moving the Blocks
+        //Used this method in child class constructor to spawn the tetramino block from the middle of the main grid
+        Move(0,4);
     }
 };
 
@@ -72,6 +88,10 @@ class SBlock : public BLOCK
         cells[1]={POSITION(0,1),POSITION(1,1),POSITION(1,2),POSITION(2,2)};
         cells[2]={POSITION(0,1),POSITION(1,2),POSITION(2,0),POSITION(2,1)};
         cells[3]={POSITION(0,0),POSITION(1,0),POSITION(1,1),POSITION(2,1)};
+        
+        //4. Moving the Blocks
+        //Used this method in child class constructor to spawn the tetramino block from the middle of the main grid
+        Move(0,3);
     }
 };
 
@@ -86,6 +106,10 @@ class TBlock : public BLOCK
         cells[1]={POSITION(0,1),POSITION(1,1),POSITION(1,2),POSITION(2,1)};
         cells[2]={POSITION(1,0),POSITION(1,1),POSITION(1,2),POSITION(2,1)};
         cells[3]={POSITION(0,1),POSITION(1,0),POSITION(1,1),POSITION(2,1)};
+        
+        //4. Moving the Blocks
+        //Used this method in child class constructor to spawn the tetramino block from the middle of the main grid
+        Move(0,3);
     }
 };
 
@@ -100,5 +124,9 @@ class ZBlock : public BLOCK
         cells[1]={POSITION(0,2),POSITION(1,1),POSITION(1,2),POSITION(2,1)};
         cells[2]={POSITION(1,0),POSITION(1,1),POSITION(2,1),POSITION(2,2)};
         cells[3]={POSITION(0,1),POSITION(1,0),POSITION(1,1),POSITION(2,0)};
+        
+        //4. Moving the Blocks
+        //Used this method in child class constructor to spawn the tetramino block from the middle of the main grid
+        Move(0,3);
     }
 };
