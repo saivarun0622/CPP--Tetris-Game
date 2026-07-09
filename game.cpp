@@ -1,3 +1,4 @@
+#include <iostream>
 #include<raylib.h>
 #include "GameClass/Gameclass.h"
 
@@ -6,6 +7,18 @@
 #include "block/blocks.cpp" //3. Creating Blocks
 */
 
+//6. Checking For Collisions
+double LastUpdateTime=0;
+bool EventTriggered(double interval)
+{
+    double CurrentTime=GetTime();
+    if(CurrentTime-LastUpdateTime>=interval)
+    {
+        LastUpdateTime=CurrentTime;
+        return true;
+    }
+    return false;
+}
 
 int main()
 {
@@ -35,6 +48,10 @@ int main()
     while (WindowShouldClose()==false)
     {
         game.ReadInput();
+        if(EventTriggered(0.8))
+        {
+            game.MoveDown();
+        }
         BeginDrawing();
         ClearBackground(DarkBlue);
         game.Draw();
