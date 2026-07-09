@@ -63,6 +63,37 @@ This makes it perfect for setups where you process commands inside a while loop.
 GetTime() - returns the total elapsed time in seconds since your raylib game started.The clock begins counting the exact millisecond InitWindow() is executed.
 
 
+LoadFontEx(const char *fileName, int fontSize, int *codepoints, int codepointCount) -  is the extended version of raylib's standard font loader. It allows you to specify the exact base pixel size and custom character sets (glyphs) when importing a .ttf or .otf font file.
+While the basic LoadFont() function automatically defaults your font to an internal size of 32 pixels and standard ASCII characters, LoadFontEx() gives you precise control over quality and memory optimization.
+fileName: The local or system path string pointing to your font file (e.g., "resources/arial.ttf").
+fontSize: The base pixel height at which raylib will pre-render the font into an internal image sheet.
+codepoints: An array of integers containing the specific characters/symbols you want to load (useful for non-English letters, accented symbols, or Cyrillic/Kanji characters). You can pass NULL or nullptr to automatically grab standard keyboard characters.
+codepointCount: The total count of characters in your array. If you passed nullptr above, set this parameter to 0.
+
+
+DrawTextEx(Font font, const char *text, Vector2 position, float fontSize, float spacing, Color color) - is raylib's extended text-rendering function. It allows you to draw text on the screen using a custom font while giving you precise control over spacing, size, and rotation.
+Unlike the basic DrawText() function (which only uses raylib's default pixel font), DrawTextEx() is required if you want to display high-quality .ttf or .otf system fonts.
+font: The custom Font object you loaded earlier using LoadFont() or LoadFontEx().
+text: The string of text you want to display on the screen (e.g., "SCORE: 100").
+position: A raylib Vector2 struct containing the {x, y} coordinates for the top-left corner of the text.
+fontSize: The rendering height of the font in pixels.
+       Pro-Tip: Match this to the fontSize you used when loading the font to keep the text perfectly sharp.
+spacing: The extra pixel gap to leave between each letter. Setting this to 2 or 3 prevents letters from bunching up.
+color: The raylib Color struct specifying the tint of the text (e.g., WHITE, RED, YELLOW).
+
+
+DrawRectangleRounded(Rectangle rec, float roundness, int segments, Color color);
+rec: A raylib Rectangle struct defining the bounds of the shape via its position coordinates, width, and height: { x, y, width, height }.
+roundness: A scale value from 0.0f to 1.0f that controls how aggressive the corner curvature is.
+       0.0f: Perfectly sharp, standard square corners.
+       0.5f: Smooth, moderately rounded corners (great for Tetris blocks).
+       1.0f: Max rounding. If the width and height are equal, this turns a square into a perfect circle.
+segments: An integer specifying how many straight lines the graphics card should use to approximate the curved arc of each corner.
+       Pro-Tip: Set this between 4 and 8. A value too low (like 1 or 2) makes the curves look blocky and diamond-like. A value too high wastes performance computing unnecessary geometry points.
+color: The raylib Color struct used to fill the shape (e.g., RED, BLUE, or your custom DarkBlue)
+
+
+
 
 Explanation:
 1. Game Window - The game window is like a blank canvas where we can draw our game objects.
@@ -71,7 +102,7 @@ We need to specify the size of the window in terms of width and height.
 
 2. Co-Ordinate System - In Computer Graphics, unlike the high school mathematics we assume the coordinate system to start from the top-left corner of any window with the values (0,0).
 x value increases as we move towards right.
-y value decreases as we move downwards.
+y value increases as we move downwards.
 
 
 3. Game Loop - Consists of three parts :
@@ -259,3 +290,17 @@ Working:
 
 18. Now, we need to check to see the game has ended.
 This is decided by the fact that if the new tetramino block is trying to over-ride a block that is already placed at the top of the gird, then it is game over.
+
+
+19. The Game Logic is complete. And now, we can add a UI for the user to inetract, show the next/upcoming block, Score, etc.
+The UI consists of several components:
+       i. A background that serves as a canvas on which all the game elements are drawn.
+       ii. A title text element for displaying the score, a rounded rectangle container to display the score value and a text element for rendering the actual score value.
+       iii. A title text element for displaying the upcoming shape, a rounded rectangle container to display the next shape and the actual next block shape itself.
+       iv. A title text element for showing "Game Over" when it reaches the game end logic.
+these elements work together to create the UI for the game, providing information on the score, the next shape, and the "Game Over" condition.
+
+
+20. To display text in raylib's graphics:
+       i. Load a font - Using LoadFontEx() function of the layrib framework.
+       ii. Display text with the loaded font
