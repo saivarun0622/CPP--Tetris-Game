@@ -93,6 +93,29 @@ segments: An integer specifying how many straight lines the graphics card should
 color: The raylib Color struct used to fill the shape (e.g., RED, BLUE, or your custom DarkBlue)
 
 
+//Not a raylib function. A function of standard header file of C++ <iostream>.
+sprintf() function formats and stores a sequence of characters and values into a string buffer instead of printing them directly to the console.
+It works exactly like printf(), but writes its output to a character array (string variable).
+
+
+MeasureTextEx(Font font, const char *text, float fontSize, float spacing) - a Raylib framework function that calculates the exact width and height (in pixels) that a string of text will occupy on the screen before you actually draw it.
+It returns this size data as a Vector2 structure containing an x (width) and a y (height) value.
+Font font: The custom font object you loaded into your game.
+Tells Raylib which typeface to look at. Since a font like Impact is much wider than a font like Arial, Raylib needs to know the exact style of the letters to compute their pixel widths accurately.
+
+const char *text: The actual string of text you want to measure (like your sprintf buffer).
+Tells Raylib which specific letters to calculate. Measuring "0" will return a much smaller width than measuring "999999".
+
+float fontSize: The size of the text in pixels (e.g., 20.0f, 30.0f).
+Dictates the scale of the measurement. A font size of 40 will occupy exactly twice the height (and roughly twice the width) of a font size of 20.
+
+float spacing: The extra pixel gap added between each letter.
+Tells Raylib how much extra breathing room to add between characters. If your text has 10 letters and a spacing of 2, Raylib adds 18 pixels (9 gaps × 2 pixels) to the final width calculation.
+
+If you write this in your code: Vector2 size = MeasureTextEx(myFont, "SCORE", 30, 2);
+Raylib looks at myFont, scales the letters to 30 pixels tall, lines up the letters S-C-O-R-E with a 2-pixel gap between each letter, and returns the total width (size.x) and height (size.y).
+
+
 
 
 Explanation:
@@ -302,5 +325,17 @@ these elements work together to create the UI for the game, providing informatio
 
 
 20. To display text in raylib's graphics:
-       i. Load a font - Using LoadFontEx() function of the layrib framework.
-       ii. Display text with the loaded font
+       i. Load a font - Using LoadFontEx() function of the raylib framework.
+       ii. Display text with the loaded font - Using DrawTextEx() function of the raylib framework.
+
+
+21. Next is to add the scoring system for the game. Our scoring system includes:
+       i. 100 points for a single line clear.
+       ii. 300 points for double line clear.
+       iii. 450 points for triple line clear.
+       iv. 1 point for each move down by the player.
+
+
+22. Score variable is a dynamic variable i.e., it changes as the game progresses.So, the amount of pixels(its size) it occupies varies as the score increases.
+So, required calculations should be done to place the score value right in the middle of box created for the scorecard.
+We first use the sprintf() of the <iostream> header file to store the score and then pass it to the renderer to render the text to the screen after the required calculations. 
