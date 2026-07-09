@@ -60,6 +60,9 @@ If you call it a second time within the exact same frame, it pops out the next k
 This makes it perfect for setups where you process commands inside a while loop.
 
 
+GetTime() - returns the total elapsed time in seconds since your raylib game started.The clock begins counting the exact millisecond InitWindow() is executed.
+
+
 
 Explanation:
 1. Game Window - The game window is like a blank canvas where we can draw our game objects.
@@ -215,3 +218,32 @@ Overall, creating a game class will greatly improve the organization and structu
 
 
 13. push_back(element) - is used mainly with vectors and it is used to append the element at the end of the vector(dynamic array).
+
+
+14. Now, we have to implement the automatic dropping of the tetramino block and for that we can use the MoveDown() method of the game class which is used as one of the controls.
+But when we use the MoveDown() method, the block immediately falls to the end of the grid and this is because the game loop runs 60/90FPS i.e., 60/90 times per second and due to this the MoveDown() method is called 60/90 times per second whereas it needs to be called only 20 frames to reach the end of the grid.
+
+
+15. Instead of calling the MoveDown() method in every exectuion of the game loop, we can update it at a slower rate, for eg, every 200 milliseconds.
+This will slow down the block's movement and make it more visible on the screen.
+To achieve this we need to create a function called EventTrigger that will be used to check if a certain amount of time has passed since the last update of the game.
+We can use this function to control the update rate of the game.
+By setting a time interval of 200 milliseconds, for eg, we can ensure that the MoveDown() method is only called every 200 milliseconds which will slow down the block's movement.
+
+
+16. LastUpdateTime variable is used to keep track of the time at which the last update of the game occured.
+This variable is initialized to 0 when the game starts and then EventTriggered() user-defined function is created to check whether a certain amount of time has passed since the start of the game/game loop.
+EventTriggered(interval) - Creates a custom "heartbeat" or timer interval. It triggers game events (like forcing a Tetris block down) at specific time milestones without slowing down or freezing the 90 FPS game loop.
+LastUpdateTime (Global double): Stores the exact timestamp (in seconds) of when the event last successfully triggered. Initialized to 0.
+interval (Parameter double): The desired delay threshold passed into the function (e.g., 0.2 seconds).
+CurrentTime (Local double): Captures a high-precision snapshot of raylib's running clock using GetTime().
+Working:
+       Read Clock: Fetches the exact real-world time since startup.
+       Check Delta: Subtracts LastUpdateTime from CurrentTime.
+       Evaluate Threshold:
+              If Difference < Interval: Skips the block and returns false. The game loop moves on immediately.
+              If Difference ≥ Interval: Fires the trigger steps below.
+       Execute Payload (On Success):
+              Prints tracking logs to the terminal using std::cout.
+              Overwrites LastUpdateTime with CurrentTime to reset the timer benchmark for the next cycle.
+              Returns true, running the dependent code (e.g., game.MoveDown())
