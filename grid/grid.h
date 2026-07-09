@@ -15,6 +15,9 @@ class GRID
     //4. Moving the Blocks
     bool IsCellOutside(int row,int column);
 
+    //6. Checking For Collisions
+    bool IsCellEmpty(int row,int column);
+
     private:
     int rows;
     int cols;
