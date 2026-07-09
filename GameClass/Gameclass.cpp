@@ -13,6 +13,9 @@ GAME::GAME()
 
     //8. Game Over
     gameOver=false;
+
+    //10. Score Calculations
+    score=0;
 }
 
 //Used to return a random block out of the 7 available blocks
@@ -61,6 +64,7 @@ void GAME::ReadInput()
         break;
     case KEY_DOWN:
         MoveDown();
+        UpdateScore(0,1); //10. Score Calculations
         break;
     case KEY_R:
         RotateBlock();
@@ -155,7 +159,11 @@ void GAME::LockBlock()
     nextBlock=GetBlock();
     
     //7.Checking for completed rows
-    grid.ClearFullrows();
+    /*grid.ClearFullrows();*/
+
+    //10. Score Caclculations
+    int rowsCompleted=grid.ClearFullrows();
+    UpdateScore(rowsCompleted,0);
 }
 
 bool GAME::BlockFits()
@@ -180,4 +188,27 @@ void GAME::Reset()
     blocks=GetBlocks();
     currentBlock=GetBlock();
     nextBlock=GetBlock();
+    score=0; //10. Score Calculations
+}
+
+
+//10. Score Calculations
+//Updates the score based on number of rows cleared and down movements by the player
+void GAME::UpdateScore(int rowsCompleted, int MoveDownPoints)
+{
+    switch (rowsCompleted)
+    {
+    case 1:
+        score+=100;
+        break;
+    case 2:
+        score+=300;
+        break;
+    case 3:
+        score+=450;
+        break;
+    default:
+        break;
+    }
+    score+=MoveDownPoints;
 }

@@ -36,7 +36,7 @@ int main()
     SetTargetFPS(90);
 
 
-    Font font = LoadFontEx("C:/Users/saiva/AppData/Local/Microsoft/Windows/Fonts/DK Magical Brush.otf",64,0,0); //9. Creating The UI
+    Font font = LoadFontEx("C:/Users/saiva/AppData/Local/Microsoft/Windows/Fonts/Caprasimo-Regular.ttf",64,0,0); //9. Creating The UI
 
 
 
@@ -65,12 +65,18 @@ int main()
         ClearBackground(black);
 
         DrawTextEx(font,"Score",{360,15},38,1,white); //9. Creating The UI
-        DrawTextEx(font,"Next Block",{330,175},30,1,white); //9. Creating The UI
+        DrawTextEx(font,"Next Block",{320,175},33,1,white); //9. Creating The UI
         if(game.gameOver)
         {
-            DrawTextEx(font,"GAME OVER",{320,450},36,1,white); //9. Creating The UI
+            DrawTextEx(font,"GAME OVER",{315,450},29,1,white); //9. Creating The UI
         }
         DrawRectangleRounded({320,65,170,60},0.5,9,grey); //9. Creating The UI
+        
+        char scoreText[10]; //10. Score Calculations
+        sprintf(scoreText,"%d",game.score); //10. Score Calculations
+        Vector2 textSize=MeasureTextEx(font,scoreText,35,1); //10. Score Calculations
+        DrawTextEx(font,scoreText,{320+(170-textSize.x)/2,65+(60-textSize.y)/2},35,1,white); //10. Score Calculations
+
         DrawRectangleRounded({320,225,170,150},0.5,9,grey); //9. Creating The UI
         game.Draw();
 

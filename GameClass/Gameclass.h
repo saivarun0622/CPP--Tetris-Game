@@ -19,6 +19,9 @@ class GAME
 
     //8. Game Over
     bool gameOver;
+
+    //10. Score Calculations
+    int score; 
     
     private:
     bool IsBlockOut();
@@ -35,4 +38,7 @@ class GAME
 
     //8. Game Over Conditional
     void Reset();
+
+    //10. Score Calculations
+    void UpdateScore(int rowsCompleted, int MoveDownPoints);
 };
