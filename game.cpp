@@ -56,6 +56,7 @@ int main()
     //Creating infinite loop that runs until the user closes the window
     while (WindowShouldClose()==false)
     {
+        UpdateMusicStream(game.music); //12. Adding SFX
         game.ReadInput();
         if(EventTriggered(0.8))
         {
@@ -68,9 +69,14 @@ int main()
         DrawTextEx(font,"Next Block",{320,175},33,1,white); //9. Creating The UI
         if(game.gameOver)
         {
+            PauseMusicStream(game.music); //12. Adding SFX
             DrawTextEx(font,"GAME OVER",{315,450},29,1,white); //9. Creating The UI
         }
-        DrawRectangleRounded({320,65,170,60},0.5,9,grey); //9. Creating The UI
+        else
+        {
+            ResumeMusicStream(game.music);//12. Adding SFX
+        }
+        DrawRectangleRounded({320,65,170,60},0.5 ,9,grey); //9. Creating The UI
         
         char scoreText[10]; //10. Score Calculations
         sprintf(scoreText,"%d",game.score); //10. Score Calculations
