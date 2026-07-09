@@ -42,7 +42,21 @@ std::vector<BLOCK>GAME::GetBlocks()
 void GAME::Draw()
 {
     grid.Draw();
-    currentBlock.Draw();
+    /*11. Next Block*/
+    currentBlock.Draw(11,11); //Changed as per required for drawing the blocks at the given row and column offset positions --11.
+    switch(nextBlock.id)
+    {
+        case 3:
+            nextBlock.Draw(255,285);
+            break;
+        case 4:
+            nextBlock.Draw(255,270);
+            break;
+        default:
+            nextBlock.Draw(270,270);
+            break;
+    }
+    /*End of 11.*/
 }
 
 //Reads the input buffer for user inputs and moves the block

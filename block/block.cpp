@@ -13,12 +13,16 @@ BLOCK::BLOCK()
 }
 
 //Accessed by the objects of the child class to draw different(7) tetramino blocks
-void BLOCK::Draw()
+/*11. Next Block*/
+void BLOCK::Draw(int x_offset,int y_offset) //Changed as per required for drawing the blocks at the given row and column offset positions --11.
+/*End of 11*/
 {
     std::vector<POSITION> tiles=BlockPos();
     for (POSITION cell : tiles)
     {
-        DrawRectangle(cell.column*cellsize+11,cell.row*cellsize+11,cellsize-1,cellsize-1,colors[id]);
+        /*11. Next Block*/
+        DrawRectangle(cell.column*cellsize+x_offset,cell.row*cellsize+y_offset,cellsize-1,cellsize-1,colors[id]); //Changed as per required for drawing the blocks at the given row and column offset positions --11.
+        /*End of 11*/
     }
 }
 

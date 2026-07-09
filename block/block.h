@@ -10,7 +10,9 @@ class BLOCK
 {
     public:
     BLOCK();
-    void Draw();
+    /*11. Next Block*/
+    void Draw(int x_offset,int y_offset); //Changed as per required for drawing the blocks at the given row and column offset positions --11.
+    /*End of 11*/
     int id;
     std::map<int, std::vector<POSITION>>cells;
 

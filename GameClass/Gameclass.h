@@ -8,27 +8,27 @@ class GAME
 {
     public:
     GAME();
-    BLOCK GetBlock();
-    std::vector<BLOCK> GetBlocks();
     void Draw();
     void ReadInput();
-    void MoveLeft();
-    void MoveRight();
     void MoveDown();
-    GRID grid;
-
+    
     //8. Game Over
     bool gameOver;
-
+    
     //10. Score Calculations
     int score; 
     
     private:
+    BLOCK GetBlock();
+    std::vector<BLOCK> GetBlocks();
+    void MoveLeft();
+    void MoveRight();
     bool IsBlockOut();
+    GRID grid;
     std::vector<BLOCK> blocks;
     BLOCK currentBlock;
     BLOCK nextBlock;
-
+    
     //5.Rotating the Blocks
     void RotateBlock();
 
