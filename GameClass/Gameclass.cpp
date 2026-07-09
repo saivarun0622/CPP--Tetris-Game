@@ -62,7 +62,7 @@ void GAME::ReadInput()
 void GAME::MoveLeft()
 {
     currentBlock.Move(0,-1);
-    if(IsBlockOut())
+    if(IsBlockOut() || BlockFits()==false /*(6. Checking For Collisions[BlockFits()])*/)
     {
         currentBlock.Move(0,1);
     }
@@ -72,7 +72,7 @@ void GAME::MoveLeft()
 void GAME::MoveRight()
 {
     currentBlock.Move(0,1);
-    if(IsBlockOut())
+    if(IsBlockOut() || BlockFits()==false /*(6. Checking For Collisions[BlockFits()])*/)
     {
         currentBlock.Move(0,-1);
     }
@@ -82,12 +82,15 @@ void GAME::MoveRight()
 void GAME::MoveDown()
 {
     currentBlock.Move(1,0);
-    if(IsBlockOut())
+    if(IsBlockOut() || BlockFits()==false /*(6. Checking For Collisions[BlockFits()])*/)
     {
         currentBlock.Move(-1,0);
+        //6. Checking For Collisions
+        LockBlock();
     }
 }
 
+//Checks if the block is about to go outside of the grid and if yes, it doesn't allow it to go outside by reverting the values of its position values.
 bool GAME::IsBlockOut()
 {
     std::vector<POSITION> tiles=currentBlock.BlockPos();
@@ -101,11 +104,39 @@ bool GAME::IsBlockOut()
     return false;
 }
 
+//Used for Rotation of the block
 void GAME::RotateBlock()
 {
     currentBlock.Rotate();
-    if(IsBlockOut())
+    if(IsBlockOut() || BlockFits()==false /*(6. Checking For Collisions[BlockFits()])*/)
     {
         currentBlock.UndoRotate();
     }
+}
+
+
+//6. Checking For Collisions
+//Used to lock the block's position on the grid once it has reached the end of the grid.
+void GAME::LockBlock()
+{
+    std::vector<POSITION> tiles = currentBlock.BlockPos();
+    for (POSITION item : tiles)
+    {
+        grid.grid[item.row][item.column]=currentBlock.id;
+    }
+    currentBlock=nextBlock;
+    nextBlock=GetBlock();
+}
+
+bool GAME::BlockFits()
+{
+    std::vector<POSITION> tiles = currentBlock.BlockPos();
+    for (POSITION item : tiles)
+    {
+        if(grid.IsCellEmpty(item.row,item.column)==false)
+        {
+            return false;
+        }
+    }
+    return true;
 }

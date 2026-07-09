@@ -25,4 +25,8 @@ class GAME
 
     //5.Rotating the Blocks
     void RotateBlock();
+
+    //6. Checking For Collisions
+    void LockBlock();
+    bool BlockFits();
 };
