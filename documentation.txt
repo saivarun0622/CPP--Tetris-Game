@@ -339,3 +339,7 @@ these elements work together to create the UI for the game, providing informatio
 22. Score variable is a dynamic variable i.e., it changes as the game progresses.So, the amount of pixels(its size) it occupies varies as the score increases.
 So, required calculations should be done to place the score value right in the middle of box created for the scorecard.
 We first use the sprintf() of the <iostream> header file to store the score and then pass it to the renderer to render the text to the screen after the required calculations. 
+
+
+23. Next is to show the upcoming/next block inside the box/container intended for showing the next block that is in line.
+For this, we will work on the block class. We will use the draw method of the block class and introduce two arguments namely x and y offset that would be used to calculate the offset of the current and next block and draw them accordingly.
