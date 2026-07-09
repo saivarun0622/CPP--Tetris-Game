@@ -116,6 +116,57 @@ If you write this in your code: Vector2 size = MeasureTextEx(myFont, "SCORE", 30
 Raylib looks at myFont, scales the letters to 30 pixels tall, lines up the letters S-C-O-R-E with a 2-pixel gap between each letter, and returns the total width (size.x) and height (size.y).
 
 
+InitAudioDevice() - it initializes your computer's audio driver and prepares the system so your game can play sounds and background music.
+
+
+CloseAudioDevice() - is the cleanup function that completely shuts down Raylib's audio engine and releases your computer's audio hardware.
+It safely terminates the background sound processing threads and frees up any RAM that was allocated for managing game sounds.
+If you forget to call CloseAudioDevice() when your game exits, it can cause problems:
+       Memory Leaks: Your operating system might keep holding onto the RAM your game used for sounds, slowing down the user's computer.
+       Audio Driver Hangs: Your computer's sound driver might think the game is still running, which can cause other applications (like YouTube or Spotify) to lose sound or stutter until you restart your computer.
+
+
+Raylib provides two different structures for audio, and using the right one prevents game lag:
+       Sound struct: Used for short, fast sound effects (like a block rotating). It loads the entire audio file into your RAM instantly for zero delay.
+       Music struct: Used for long background tracks. It only loads a tiny fraction of the file at a time, continuously reading chunks from the disk as it plays to keep memory usage extremely low.
+
+
+LoadMusicStream(const char *fileName) - opens an audio file from your computer's storage, allocates a memory buffer for it, and prepares a Music structure to stream the track.
+Instead of reading the entire long audio file into RAM all at once (which would consume a lot of memory), it establishes a pipeline to stream the data in small, continuous chunks during gameplay.
+Argument (const char *fileName): The relative or absolute path to your music file (e.g., "audio/theme.mp3").
+Return Value: It returns a populated Music structure that you must use with functions like PlayMusicStream() and UpdateMusicStream().
+What it Does Behind the Scenes:
+       Locates the File: It searches your project directory for the specified audio path (supporting formats like .mp3, .ogg, .wav, etc.).
+       Initializes the Decoder: It checks how the file is encoded so Raylib knows how to decompress the audio data on the fly.
+       Allocates Streaming Buffers: It creates tiny tracking buffers in memory. When the game plays the music, Raylib fills these buffers with a few milliseconds of audio from your disk, plays them, empties them, and repeats.
+
+
+UnloadMusicStream(Music music) is the cleanup function that closes the audio file handle and frees all the internal memory buffers allocated for that specific music stream.
+
+
+PlayMusicStream(Music music) - is the Raylib function that starts or resumes the playback of a specific music track.
+It does not actually play the sound directly to your speakers on its own; instead, it flips an internal switch inside the Music struct to mark the status as active. Once active, the track is ready to start passing data to the audio hardware.
+Argument: You pass the Music structure variable that you previously loaded using LoadMusicStream().
+How It Works under the Hood
+       Resets the Cursor:If the song was completely stopped or never started, PlayMusicStream() resets the internal file pointer back to the very first byte of the audio file.
+       Activates Playback Status: It changes the internal state of the music pipeline from "paused/stopped" to "playing".
+       Primes the Mixer: It tells Raylib's background audio mixer thread to begin listening for updates from this stream.
+       Crucial Rule: The Relationship with UpdateMusicStream()Calling PlayMusicStream() only turns the stream on. To actually hear the music continue past the first few milliseconds, you must call UpdateMusicStream() continuously inside your infinite game loop.
+
+
+LoadSound(const char *fileName) - opens a short audio file from your computer's storage and copies its entire contents directly into your system RAM instantly.
+Unlike music streams, it does not read the file in chunks on the fly. It pre-loads the full sound effect into memory so that it can play back with zero lag or delay the moment your game logic calls for it.
+Argument (const char *fileName): The path to your sound file (e.g., "sounds/rotate.wav" or "sounds/clear.mp3").
+Return Value: It returns a populated Sound structure containing the raw audio samples ready for instant playback.
+
+
+UnloadSound(Sound sound) - completely clears a sound effect's raw audio data out of your system RAM and destroys its audio pipeline.
+To maintain our previous file comparison, if LoadSound() is like copying an entire text file into a character array in memory, UnloadSound() is like calling delete[] or free() on that array to hand the RAM back to the operating system.
+Argument: You pass the Sound structure variable that you loaded earlier using LoadSound().
+What it Does Behind the Scenes
+       Deallocates RAM: It completely wipes the fast system memory where the full sound sample (the waves and audio data) was being stored.
+       Closes the Sound Stream Pipeline: It frees the specific hardware mixing slot that was allocated to that sound effect, allowing your computer's audio card to use it for other applications.
+
 
 
 Explanation:
@@ -343,3 +394,11 @@ We first use the sprintf() of the <iostream> header file to store the score and 
 
 23. Next is to show the upcoming/next block inside the box/container intended for showing the next block that is in line.
 For this, we will work on the block class. We will use the draw method of the block class and introduce two arguments namely x and y offset that would be used to calculate the offset of the current and next block and draw them accordingly.
+
+
+24. For the last part, we will be adding the sound effects to the game. There are three/four sounds:
+       i.music.mp3 - for bgm music as long as the player keeps playing without "GAME OVER".
+       ii.rotate.mp3 - used when the player rotates the block.
+       iii.clear.mp3 - used when rows are cleared from the game.
+       iv.game_over.mp3(opt) - used when "GAME OVER".
+We can either implement the method for playing music in the game.cpp or in the GameClass.h/.cpp .
