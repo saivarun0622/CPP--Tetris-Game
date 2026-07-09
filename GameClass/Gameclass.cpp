@@ -16,6 +16,26 @@ GAME::GAME()
 
     //10. Score Calculations
     score=0;
+
+    //12.Adding SFX
+    InitAudioDevice();
+    music=LoadMusicStream("SFX/music.mp3");
+    PlayMusicStream(music);
+    rotateSound=LoadSound("SFX/rotate.mp3");
+    clearSound=LoadSound("SFX/clear.mp3");
+    game_over=LoadSound("SFX/game_over.mp3");
+}
+
+
+//12.Adding SFX
+//Deconstructor Specially for deinitializing the audio
+GAME::~GAME()
+{
+    UnloadSound(rotateSound);
+    UnloadSound(clearSound);
+    UnloadSound(game_over);
+    UnloadMusicStream(music);
+    CloseAudioDevice();
 }
 
 //Used to return a random block out of the 7 available blocks
@@ -150,6 +170,12 @@ void GAME::RotateBlock()
         {
             currentBlock.UndoRotate();
         }
+        //12. Adding SFX
+        else
+        {
+            PlaySound(rotateSound);
+        }
+        //End of 12
     }
 }
 
@@ -167,8 +193,13 @@ void GAME::LockBlock()
 
     if(BlockFits()==false) //8. Game Over Conditional
     {
-        std::cout<<"NULL\n";
         gameOver=true;
+        /*12. Adding SFX*/
+        if(gameOver)
+        {
+            PlaySound(game_over);
+        }
+        /*End of 12*/
     }
     nextBlock=GetBlock();
     
@@ -177,7 +208,18 @@ void GAME::LockBlock()
 
     //10. Score Caclculations
     int rowsCompleted=grid.ClearFullrows();
+
+    /*Not required Due to 12.
     UpdateScore(rowsCompleted,0);
+    */
+
+    //12. Adding SFX
+    if(rowsCompleted>0)
+    {
+        PlaySound(clearSound);
+        UpdateScore(rowsCompleted,0);
+    }
+    //End of 12
 }
 
 bool GAME::BlockFits()

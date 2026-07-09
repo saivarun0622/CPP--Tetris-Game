@@ -8,6 +8,9 @@ class GAME
 {
     public:
     GAME();
+    //12.Adding SFX
+    //Deconstructor mainly for deinitializing the audio
+    ~GAME();
     void Draw();
     void ReadInput();
     void MoveDown();
@@ -16,7 +19,10 @@ class GAME
     bool gameOver;
     
     //10. Score Calculations
-    int score; 
+    int score;
+    
+    //12. Adding SFX
+    Music music;
     
     private:
     BLOCK GetBlock();
@@ -41,4 +47,9 @@ class GAME
 
     //10. Score Calculations
     void UpdateScore(int rowsCompleted, int MoveDownPoints);
+    
+    //12. Adding SFX
+    Sound rotateSound;
+    Sound clearSound;
+    Sound game_over;
 };
