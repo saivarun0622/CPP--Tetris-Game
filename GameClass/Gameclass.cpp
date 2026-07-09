@@ -126,6 +126,9 @@ void GAME::LockBlock()
     }
     currentBlock=nextBlock;
     nextBlock=GetBlock();
+    
+    //7.Checking for completed rows
+    grid.ClearFullrows();
 }
 
 bool GAME::BlockFits()

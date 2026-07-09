@@ -81,3 +81,56 @@ bool GRID::IsCellEmpty(int row, int column)
     }
     return false;
 }
+
+
+//7.Checking for completed rows
+//Checks if the row is completely filled by blocks or not
+bool GRID::IsRowFull(int row)
+{
+    for (int column=0;column<cols;column++)
+    {
+        if(grid[row][column]==0)
+        {
+            return false;
+        }
+    }
+    return true;
+}
+
+//Clears the row by setting the value to 0
+void GRID::ClearRow(int row)
+{
+    for (int column=0;column<cols;column++)
+    {
+        grid[row][column]=0;
+    }
+}
+
+//Moves the row down
+void GRID::MoveRowDown(int row, int numrows)
+{
+    for (int column=0;column<cols;column++)
+    {
+        grid[row + numrows][column]=grid[row][column];
+        grid[row][column]=0;
+    }
+}
+
+//Will check all the rows from the bottom to the top to see if any row is completed and do the work accordingly if the rows are empty by calling the ClearRow() and MoveRowDown() methods.
+int GRID::ClearFullrows()
+{
+    int completedrows=0;
+    for (int row=rows-1;row>=0;row--)
+    {
+        if(IsRowFull(row))
+        {
+            ClearRow(row);
+            completedrows++;
+        }
+        else if(completedrows>0)
+        {
+            MoveRowDown(row,completedrows);
+        }
+    }
+    return completedrows;
+}
