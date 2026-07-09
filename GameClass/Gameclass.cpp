@@ -1,4 +1,5 @@
 //4. Creating Game Class for better management and movement of the blocks.
+#include<iostream>
 #include <cstdlib>
 #include<ctime>
 #include "Gameclass.h"
@@ -9,6 +10,9 @@ GAME::GAME()
     blocks=GetBlocks();
     currentBlock=GetBlock();
     nextBlock=GetBlock();
+
+    //8. Game Over
+    gameOver=false;
 }
 
 //Used to return a random block out of the 7 available blocks
@@ -42,6 +46,11 @@ void GAME::Draw()
 void GAME::ReadInput()
 {
     int key=GetKeyPressed();
+    if(gameOver && key!=0) //8. Game Over Conditional
+    {
+        gameOver=false;
+        Reset();
+    }
     switch (key)
     {
     case KEY_LEFT:
@@ -61,32 +70,41 @@ void GAME::ReadInput()
 //Moving Left
 void GAME::MoveLeft()
 {
-    currentBlock.Move(0,-1);
-    if(IsBlockOut() || BlockFits()==false /*(6. Checking For Collisions[BlockFits()])*/)
+    if(!gameOver) //8. Game Over Conditional
     {
-        currentBlock.Move(0,1);
+        currentBlock.Move(0,-1);
+        if(IsBlockOut() || BlockFits()==false /*(6. Checking For Collisions[BlockFits()])*/)
+        {
+            currentBlock.Move(0,1);
+        }
     }
 }
 
 //Moving Right
 void GAME::MoveRight()
 {
-    currentBlock.Move(0,1);
-    if(IsBlockOut() || BlockFits()==false /*(6. Checking For Collisions[BlockFits()])*/)
+    if(!gameOver) //8. Game Over Conditional
     {
-        currentBlock.Move(0,-1);
+        currentBlock.Move(0,1);
+        if(IsBlockOut() || BlockFits()==false /*(6. Checking For Collisions[BlockFits()])*/)
+        {
+            currentBlock.Move(0,-1);
+        }
     }
 }
 
 //Moving Down
 void GAME::MoveDown()
 {
-    currentBlock.Move(1,0);
-    if(IsBlockOut() || BlockFits()==false /*(6. Checking For Collisions[BlockFits()])*/)
+    if(!gameOver) //8. Game Over Conditional
     {
-        currentBlock.Move(-1,0);
-        //6. Checking For Collisions
-        LockBlock();
+        currentBlock.Move(1,0);
+        if(IsBlockOut() || BlockFits()==false /*(6. Checking For Collisions[BlockFits()])*/)
+        {
+            currentBlock.Move(-1,0);
+            //6. Checking For Collisions
+            LockBlock();
+        }
     }
 }
 
@@ -107,10 +125,13 @@ bool GAME::IsBlockOut()
 //Used for Rotation of the block
 void GAME::RotateBlock()
 {
-    currentBlock.Rotate();
-    if(IsBlockOut() || BlockFits()==false /*(6. Checking For Collisions[BlockFits()])*/)
+    if(!gameOver) //8. Game Over Conditional
     {
-        currentBlock.UndoRotate();
+        currentBlock.Rotate();
+        if(IsBlockOut() || BlockFits()==false /*(6. Checking For Collisions[BlockFits()])*/)
+        {
+            currentBlock.UndoRotate();
+        }
     }
 }
 
@@ -125,6 +146,12 @@ void GAME::LockBlock()
         grid.grid[item.row][item.column]=currentBlock.id;
     }
     currentBlock=nextBlock;
+
+    if(BlockFits()==false) //8. Game Over Conditional
+    {
+        std::cout<<"NULL\n";
+        gameOver=true;
+    }
     nextBlock=GetBlock();
     
     //7.Checking for completed rows
@@ -142,4 +169,15 @@ bool GAME::BlockFits()
         }
     }
     return true;
+}
+
+
+//8. Game Over Conditional
+//Resets the game upon game over
+void GAME::Reset()
+{
+    grid.Initialize();
+    blocks=GetBlocks();
+    currentBlock=GetBlock();
+    nextBlock=GetBlock();
 }

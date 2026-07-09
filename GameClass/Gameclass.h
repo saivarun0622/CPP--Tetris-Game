@@ -16,6 +16,9 @@ class GAME
     void MoveRight();
     void MoveDown();
     GRID grid;
+
+    //8. Game Over
+    bool gameOver;
     
     private:
     bool IsBlockOut();
@@ -29,4 +32,7 @@ class GAME
     //6. Checking For Collisions
     void LockBlock();
     bool BlockFits();
+
+    //8. Game Over Conditional
+    void Reset();
 };
