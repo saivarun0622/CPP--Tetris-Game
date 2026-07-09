@@ -255,3 +255,7 @@ Working:
        If we fidn a completed row, we will increase the variable by one.
        Then we will clear the row and check the row above it.
        If it is not completed,We will move that row down by the value the variable contains.
+
+
+18. Now, we need to check to see the game has ended.
+This is decided by the fact that if the new tetramino block is trying to over-ride a block that is already placed at the top of the gird, then it is game over.
