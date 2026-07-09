@@ -1,6 +1,7 @@
 #include <iostream>
 #include<raylib.h>
 #include "GameClass/Gameclass.h"
+#include "block/colors.h"
 
 /*These lines of code were written for testing purpose before including the GameClass files.
 #include "grid/grid.h"  //2. Creating Grid
@@ -26,9 +27,17 @@ int main()
 
 
     //Creating Game Window - InitWindow()
-    InitWindow(300,600,"Tetris-Game");
-    Color DarkBlue={50,50,255,255};
+    InitWindow(500,620,"Tetris-Game"); //9. Creating The UI
+
+    /*
+    Color DarkBlue={50,50,255,255};  Removed as the required color is take directly from the colors.cpp and colors.h
+    */
+
     SetTargetFPS(90);
+
+
+    Font font = LoadFontEx("C:/Users/saiva/AppData/Local/Microsoft/Windows/Fonts/DK Magical Brush.otf",64,0,0); //9. Creating The UI
+
 
 
     /*These lines of code were written for testing purpose before including the GameClass files.
@@ -53,7 +62,16 @@ int main()
             game.MoveDown();
         }
         BeginDrawing();
-        ClearBackground(DarkBlue);
+        ClearBackground(black);
+
+        DrawTextEx(font,"Score",{360,15},38,1,white); //9. Creating The UI
+        DrawTextEx(font,"Next Block",{330,175},30,1,white); //9. Creating The UI
+        if(game.gameOver)
+        {
+            DrawTextEx(font,"GAME OVER",{320,450},36,1,white); //9. Creating The UI
+        }
+        DrawRectangleRounded({320,65,170,60},0.5,9,grey); //9. Creating The UI
+        DrawRectangleRounded({320,225,170,150},0.5,9,grey); //9. Creating The UI
         game.Draw();
 
 
