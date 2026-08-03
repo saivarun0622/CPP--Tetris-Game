@@ -1,0 +1,404 @@
+Game Structure - 1. Definitions
+                        i. Defining the variables needed.
+                        ii. Creating the game objects.
+                 2. Game Loop
+                        i.Updating the position of the game objects.
+                        ii.Checking for collisions.
+
+
+
+Raylib Functions Used:
+InitWindow(width,height,title) - initializes the window and the OpenGL context. It must be called before any other raylib functions.
+width: The width of the window in pixels.
+height: The height of the window in pixels.
+title: A text string displayed in the window title bar.
+
+
+CloseWindow() - closes the window and terminates the OpenGL context. It should be called at the very end of your program to clean up resources.
+
+
+WindowShouldClose() - checks if the user has attempted to close the window (by clicking the 'X' button or pressing the ESC key).
+It returns a boolean value (true or false).
+
+
+BeginDrawing() - prepares the canvas for rendering and clears the internal setup to start drawing a new frame.
+It must be called at the start of every frame within your main game loop.
+It sets up the internal state for 2D rendering.
+It prepares the back buffer for new drawing commands.
+It activates the target canvas (the screen by default).
+
+
+EndDrawing() - finishes frame rendering and copies the completed drawing to the screen.
+It must be called at the end of the drawing section, pairing directly with BeginDrawing().
+
+
+SetTargetFPS(int fps_no) - sets the target frame rate (frames per second) for your application.It controls how fast your game loop runs.
+Tells EndDrawing() how long to wait before starting the next frame.
+Stabilizes game physics and animations by keeping time steps consistent.
+Prevents your CPU and GPU from running at 100% capacity to render unnecessary frames.
+framerates tells the amount of time each frame gets.
+
+
+ClearBackground(struct color) - wipes the entire screen or canvas clean by filling it with a single, solid color.
+It is almost always the very first function called after BeginDrawing().
+color - The color you want the background to be. raylib provides many built-in color constants such as RAYWHITE, BLACK, BLUE, RED, BLANK (transparent), etc.
+
+
+DrawRectangle(posX,posY,width,height,color) - is a core 2D shape rendering function used to draw a flat, color-filled rectangle directly to the screen.
+It is primarily used for prototyping UI elements, health bars, background blocks, and basic game geometry.
+posX: The horizontal (X) pixel coordinate of the rectangle's top-left corner.
+posY: The vertical (Y) pixel coordinate of the rectangle's top-left corner.
+width:The width of the rectangle in pixels.height: The height of the rectangle in pixels.
+color:The color used to fill the rectangle (e.g., RED, BLUE, RAYWHITE).
+
+
+GetKeyPressed() - The GetKeyPressed() function in raylib pulls the oldest keyboard action out of an internal input queue and returns its corresponding integer keycode (e.g., KEY_LEFT, KEY_SPACE, KEY_ENTER).
+If no keys were pressed during that specific frame, or if you have already read all the keys out of the queue, the function returns 0.
+If a player hits multiple keys incredibly fast inside a single frame (like hitting KEY_DOWN and KEY_RIGHT almost simultaneously), raylib captures both.
+The first time you call GetKeyPressed(), it returns the first key.
+If you call it a second time within the exact same frame, it pops out the next key.
+This makes it perfect for setups where you process commands inside a while loop.
+
+
+GetTime() - returns the total elapsed time in seconds since your raylib game started.The clock begins counting the exact millisecond InitWindow() is executed.
+
+
+LoadFontEx(const char *fileName, int fontSize, int *codepoints, int codepointCount) -  is the extended version of raylib's standard font loader. It allows you to specify the exact base pixel size and custom character sets (glyphs) when importing a .ttf or .otf font file.
+While the basic LoadFont() function automatically defaults your font to an internal size of 32 pixels and standard ASCII characters, LoadFontEx() gives you precise control over quality and memory optimization.
+fileName: The local or system path string pointing to your font file (e.g., "resources/arial.ttf").
+fontSize: The base pixel height at which raylib will pre-render the font into an internal image sheet.
+codepoints: An array of integers containing the specific characters/symbols you want to load (useful for non-English letters, accented symbols, or Cyrillic/Kanji characters). You can pass NULL or nullptr to automatically grab standard keyboard characters.
+codepointCount: The total count of characters in your array. If you passed nullptr above, set this parameter to 0.
+
+
+DrawTextEx(Font font, const char *text, Vector2 position, float fontSize, float spacing, Color color) - is raylib's extended text-rendering function. It allows you to draw text on the screen using a custom font while giving you precise control over spacing, size, and rotation.
+Unlike the basic DrawText() function (which only uses raylib's default pixel font), DrawTextEx() is required if you want to display high-quality .ttf or .otf system fonts.
+font: The custom Font object you loaded earlier using LoadFont() or LoadFontEx().
+text: The string of text you want to display on the screen (e.g., "SCORE: 100").
+position: A raylib Vector2 struct containing the {x, y} coordinates for the top-left corner of the text.
+fontSize: The rendering height of the font in pixels.
+       Pro-Tip: Match this to the fontSize you used when loading the font to keep the text perfectly sharp.
+spacing: The extra pixel gap to leave between each letter. Setting this to 2 or 3 prevents letters from bunching up.
+color: The raylib Color struct specifying the tint of the text (e.g., WHITE, RED, YELLOW).
+
+
+DrawRectangleRounded(Rectangle rec, float roundness, int segments, Color color);
+rec: A raylib Rectangle struct defining the bounds of the shape via its position coordinates, width, and height: { x, y, width, height }.
+roundness: A scale value from 0.0f to 1.0f that controls how aggressive the corner curvature is.
+       0.0f: Perfectly sharp, standard square corners.
+       0.5f: Smooth, moderately rounded corners (great for Tetris blocks).
+       1.0f: Max rounding. If the width and height are equal, this turns a square into a perfect circle.
+segments: An integer specifying how many straight lines the graphics card should use to approximate the curved arc of each corner.
+       Pro-Tip: Set this between 4 and 8. A value too low (like 1 or 2) makes the curves look blocky and diamond-like. A value too high wastes performance computing unnecessary geometry points.
+color: The raylib Color struct used to fill the shape (e.g., RED, BLUE, or your custom DarkBlue)
+
+
+//Not a raylib function. A function of standard header file of C++ <iostream>.
+sprintf() function formats and stores a sequence of characters and values into a string buffer instead of printing them directly to the console.
+It works exactly like printf(), but writes its output to a character array (string variable).
+
+
+MeasureTextEx(Font font, const char *text, float fontSize, float spacing) - a Raylib framework function that calculates the exact width and height (in pixels) that a string of text will occupy on the screen before you actually draw it.
+It returns this size data as a Vector2 structure containing an x (width) and a y (height) value.
+Font font: The custom font object you loaded into your game.
+Tells Raylib which typeface to look at. Since a font like Impact is much wider than a font like Arial, Raylib needs to know the exact style of the letters to compute their pixel widths accurately.
+
+const char *text: The actual string of text you want to measure (like your sprintf buffer).
+Tells Raylib which specific letters to calculate. Measuring "0" will return a much smaller width than measuring "999999".
+
+float fontSize: The size of the text in pixels (e.g., 20.0f, 30.0f).
+Dictates the scale of the measurement. A font size of 40 will occupy exactly twice the height (and roughly twice the width) of a font size of 20.
+
+float spacing: The extra pixel gap added between each letter.
+Tells Raylib how much extra breathing room to add between characters. If your text has 10 letters and a spacing of 2, Raylib adds 18 pixels (9 gaps × 2 pixels) to the final width calculation.
+
+If you write this in your code: Vector2 size = MeasureTextEx(myFont, "SCORE", 30, 2);
+Raylib looks at myFont, scales the letters to 30 pixels tall, lines up the letters S-C-O-R-E with a 2-pixel gap between each letter, and returns the total width (size.x) and height (size.y).
+
+
+InitAudioDevice() - it initializes your computer's audio driver and prepares the system so your game can play sounds and background music.
+
+
+CloseAudioDevice() - is the cleanup function that completely shuts down Raylib's audio engine and releases your computer's audio hardware.
+It safely terminates the background sound processing threads and frees up any RAM that was allocated for managing game sounds.
+If you forget to call CloseAudioDevice() when your game exits, it can cause problems:
+       Memory Leaks: Your operating system might keep holding onto the RAM your game used for sounds, slowing down the user's computer.
+       Audio Driver Hangs: Your computer's sound driver might think the game is still running, which can cause other applications (like YouTube or Spotify) to lose sound or stutter until you restart your computer.
+
+
+Raylib provides two different structures for audio, and using the right one prevents game lag:
+       Sound struct: Used for short, fast sound effects (like a block rotating). It loads the entire audio file into your RAM instantly for zero delay.
+       Music struct: Used for long background tracks. It only loads a tiny fraction of the file at a time, continuously reading chunks from the disk as it plays to keep memory usage extremely low.
+
+
+LoadMusicStream(const char *fileName) - opens an audio file from your computer's storage, allocates a memory buffer for it, and prepares a Music structure to stream the track.
+Instead of reading the entire long audio file into RAM all at once (which would consume a lot of memory), it establishes a pipeline to stream the data in small, continuous chunks during gameplay.
+Argument (const char *fileName): The relative or absolute path to your music file (e.g., "audio/theme.mp3").
+Return Value: It returns a populated Music structure that you must use with functions like PlayMusicStream() and UpdateMusicStream().
+What it Does Behind the Scenes:
+       Locates the File: It searches your project directory for the specified audio path (supporting formats like .mp3, .ogg, .wav, etc.).
+       Initializes the Decoder: It checks how the file is encoded so Raylib knows how to decompress the audio data on the fly.
+       Allocates Streaming Buffers: It creates tiny tracking buffers in memory. When the game plays the music, Raylib fills these buffers with a few milliseconds of audio from your disk, plays them, empties them, and repeats.
+
+
+UnloadMusicStream(Music music) is the cleanup function that closes the audio file handle and frees all the internal memory buffers allocated for that specific music stream.
+
+
+PlayMusicStream(Music music) - is the Raylib function that starts or resumes the playback of a specific music track.
+It does not actually play the sound directly to your speakers on its own; instead, it flips an internal switch inside the Music struct to mark the status as active. Once active, the track is ready to start passing data to the audio hardware.
+Argument: You pass the Music structure variable that you previously loaded using LoadMusicStream().
+How It Works under the Hood
+       Resets the Cursor:If the song was completely stopped or never started, PlayMusicStream() resets the internal file pointer back to the very first byte of the audio file.
+       Activates Playback Status: It changes the internal state of the music pipeline from "paused/stopped" to "playing".
+       Primes the Mixer: It tells Raylib's background audio mixer thread to begin listening for updates from this stream.
+       Crucial Rule: The Relationship with UpdateMusicStream()Calling PlayMusicStream() only turns the stream on. To actually hear the music continue past the first few milliseconds, you must call UpdateMusicStream() continuously inside your infinite game loop.
+
+
+LoadSound(const char *fileName) - opens a short audio file from your computer's storage and copies its entire contents directly into your system RAM instantly.
+Unlike music streams, it does not read the file in chunks on the fly. It pre-loads the full sound effect into memory so that it can play back with zero lag or delay the moment your game logic calls for it.
+Argument (const char *fileName): The path to your sound file (e.g., "sounds/rotate.wav" or "sounds/clear.mp3").
+Return Value: It returns a populated Sound structure containing the raw audio samples ready for instant playback.
+
+
+UnloadSound(Sound sound) - completely clears a sound effect's raw audio data out of your system RAM and destroys its audio pipeline.
+To maintain our previous file comparison, if LoadSound() is like copying an entire text file into a character array in memory, UnloadSound() is like calling delete[] or free() on that array to hand the RAM back to the operating system.
+Argument: You pass the Sound structure variable that you loaded earlier using LoadSound().
+What it Does Behind the Scenes
+       Deallocates RAM: It completely wipes the fast system memory where the full sound sample (the waves and audio data) was being stored.
+       Closes the Sound Stream Pipeline: It frees the specific hardware mixing slot that was allocated to that sound effect, allowing your computer's audio card to use it for other applications.
+
+
+
+Explanation:
+1. Game Window - The game window is like a blank canvas where we can draw our game objects.
+We need to specify the size of the window in terms of width and height.
+
+
+2. Co-Ordinate System - In Computer Graphics, unlike the high school mathematics we assume the coordinate system to start from the top-left corner of any window with the values (0,0).
+x value increases as we move towards right.
+y value increases as we move downwards.
+
+
+3. Game Loop - Consists of three parts :
+i. Event Handling - We need to check for any events that occur in the game like quitting the game, clicking buttons in the game, keys pressed on the keyboards, etc.
+ii. Updating Positions - We update the positions of game objects(like blocks) based on the events that we identified.
+iii. Drawing Objects - Finally, we draw the objects based on their updated positions on the screen. This step uses the raylib's graphics functions to render the objects on to the display.
+
+
+4. Colors in raylib - raylib uses a Structure datatype called "struct color{r,g,b,a}" to provide colours to our canvas.
+
+
+5. In Tetris, the gameplay area is a grid consisting of 20 rows and 10 columns.The rows are counted from top to bottom while the columns are counted from left to right.
+   To represent the grid, we will use a 2-Dimensional array where the unoccupied grid cells are represented with the value 0.
+   There are seven different colours used by the tetromino blocks and in our code, each color has its respective number(from 1-7) assigned to it (use of vectors). This is for the tetromino blocks that are already placed in the grid.
+   The tetromino block that is still being controlled by the player will not be reflected in the 2-D array(grid) and instead it will be stored and managed separately in the game logic.
+   We will be using OOPS concepts to implement the grid. And as we are using OOPS concepts, we will be declaring the class for the grid separately in a different header file and its implementation is done in the main cpp file.
+   Whenever we create multiple files(header files) for our projects, we use the preprocessive director(#pragma once) so that when the different header files are interconnected and when we try to include them in the main cpp file, there would be no redefinitive error thrown by the compiler.
+       i. The Files (Without Protection)
+       cpp// Position.h
+       struct Position {
+       int x;
+       int y;
+       };
+
+       // Player.h
+       #include "Position.h"
+
+       struct Player {
+       Position pos;
+       int health;
+       };
+
+       // main.cpp
+       #include "Player.h"
+       #include "Position.h" // Oops! Included directly again.
+
+       int main() {
+       Player hero;
+       return 0;
+       }
+
+       ii. What the Compiler Sees (The Failure) - Before compiling, the preprocessor copies and pastes the contents of the #include files directly into main.cpp.The expanded main.cpp file ends up looking like this to the compiler:
+       // From Player.h -> which included Position.h
+       struct Position {
+       int x;
+       int y;
+       };
+
+       struct Player {
+       Position pos;
+       int health;
+       };
+
+       // From the direct include of Position.h in main.cpp
+       struct Position {
+       int x;
+       int y;
+       }; // <--- ERROR! "Position" struct type redefinition
+
+       int main() {
+       Player hero;
+       return 0;
+       }
+       Because struct Position is pasted twice, the compiler panics with a redefinition error and halts the build.
+
+       The Solution: Using #pragma once.
+       i. The Fixed Header Filecpp// Position.h
+       #pragma once  // <--- The magic fix
+
+       struct Position {
+       int x;
+       int y;
+       };
+
+       ii. What the Compiler Sees Now (The Success) - When the preprocessor hits the second #include "Position.h" in main.cpp, it checks its internal list, sees that Position.h was already processed via Player.h, and completely ignores the second request.
+       The expanded main.cpp now looks clean and error-free:
+       // From Player.h (Position.h is allowed here)
+       struct Position {
+       int x;
+       int y;
+       };
+
+       struct Player {
+       Position pos;
+       int health;
+       };
+
+       // The direct include of Position.h is safely skipped by the preprocessor!
+
+       int main() {
+       Player hero;
+       return 0;
+       }
+       The program now compiles perfectly because struct Position is only defined a single time.
+
+
+6. The Golden Rules of Header Files:
+       i.Self-Containment - A header file must include everything it needs to compile successfully on its own. If Player uses a Position, Player.h must include Position.h.
+       ii.Hidden Dependencies - If someone else wants to use your Player.h file in a completely different part of the project later, they shouldn't have to guess that they also need to include Position.h first. It should just work automatically.
+       iii.By using #pragma once inside Position.h, you get the best of both worlds: Player.h can safely include it to satisfy its own needs, and main.cpp can safely include it without causing duplication errors.
+
+
+7. We use the header file to create/declare the required classes and in its respective ".cpp" file, we define the working of the methods,defining variables,etc.
+
+
+8. std::vector is one of the most important containers in C++. It is essentially a dynamic array—an array that can automatically grow or shrink as you add or remove elements.
+   the size starts at 0 and can grow as needed.
+   With a vector you simply keep adding elements.
+   eg:
+       std::vector<int> scores;
+       scores.push_back(10);
+       scores.push_back(20);
+       scores.push_back(30);
+
+
+9. In Tetris, there are 7 different shpaed tetramino blocks and they are namely:
+       i. L-Shaped block
+       ii.J-Shaped block
+       iii.I-Shaped block
+       iv.O-Shaped block
+       v. S-Shaped block
+       vi.T-Shaped block
+       vii.Z-Shaped block
+each of these blocks are made of four cells/tiles and can be rotated in four different(except O-Shaped block) directions from their central axis respcetively.
+To represent the block, we imagine a box around each block that is big enough to fit in all the four different direction states of the tetramino block.
+The box imagined to contain the block is divided into a grid and we lable the top left corner as the origin.
+
+
+10. In C++, a map (std::map) is an associative container that stores elements as key-value pairs.
+Every key in a map must be unique, and each key maps to exactly one value. By default, std::map automatically sorts its keys in ascending order as they are inserted.
+It is part of the Standard Template Library (STL) and requires the <map> header.
+
+
+11. Both the main grid and the grid that contains the block have the same origin of (0,0).
+So to move the tetramino blocks in the main grid, we need to move the sub grid that contains one of the seven tetramino blocks.
+
+
+12. To improve code organization and make it easier to manage in the future, we will create a game class to hold the grid and the block objects, as well as various mehtods.
+The game class will serve as a container for all the elements of our game such as the grid, current & next block, and the game state.
+It will also hold the methods that manage the game's logic such as Updating the block's position, checking for collisions,etc.
+By centralizing all the game's functionality within this class, it will be easier to understand,maintain and expand in future.
+Additionally, it will also improve code readability and reduce the risk of bugs by keeping related code together in one place.
+Overall, creating a game class will greatly improve the organization and structure of our codebase, making it easier to work with it in the future.
+
+
+13. push_back(element) - is used mainly with vectors and it is used to append the element at the end of the vector(dynamic array).
+
+
+14. Now, we have to implement the automatic dropping of the tetramino block and for that we can use the MoveDown() method of the game class which is used as one of the controls.
+But when we use the MoveDown() method, the block immediately falls to the end of the grid and this is because the game loop runs 60/90FPS i.e., 60/90 times per second and due to this the MoveDown() method is called 60/90 times per second whereas it needs to be called only 20 frames to reach the end of the grid.
+
+
+15. Instead of calling the MoveDown() method in every exectuion of the game loop, we can update it at a slower rate, for eg, every 200 milliseconds.
+This will slow down the block's movement and make it more visible on the screen.
+To achieve this we need to create a function called EventTrigger that will be used to check if a certain amount of time has passed since the last update of the game.
+We can use this function to control the update rate of the game.
+By setting a time interval of 200 milliseconds, for eg, we can ensure that the MoveDown() method is only called every 200 milliseconds which will slow down the block's movement.
+
+
+16. LastUpdateTime variable is used to keep track of the time at which the last update of the game occured.
+This variable is initialized to 0 when the game starts and then EventTriggered() user-defined function is created to check whether a certain amount of time has passed since the start of the game/game loop.
+EventTriggered(interval) - Creates a custom "heartbeat" or timer interval. It triggers game events (like forcing a Tetris block down) at specific time milestones without slowing down or freezing the 90 FPS game loop.
+LastUpdateTime (Global double): Stores the exact timestamp (in seconds) of when the event last successfully triggered. Initialized to 0.
+interval (Parameter double): The desired delay threshold passed into the function (e.g., 0.2 seconds).
+CurrentTime (Local double): Captures a high-precision snapshot of raylib's running clock using GetTime().
+Working:
+       Read Clock: Fetches the exact real-world time since startup.
+       Check Delta: Subtracts LastUpdateTime from CurrentTime.
+       Evaluate Threshold:
+              If Difference < Interval: Skips the block and returns false. The game loop moves on immediately.
+              If Difference ≥ Interval: Fires the trigger steps below.
+       Execute Payload (On Success):
+              Prints tracking logs to the terminal using std::cout.
+              Overwrites LastUpdateTime with CurrentTime to reset the timer benchmark for the next cycle.
+              Returns true, running the dependent code (e.g., game.MoveDown())
+
+
+17. Next step is to check for the completed rows and for this all we have to do is to check if a row is full, and when it is,have to clear it and move all the occupied cells above that row,one row down.
+For this, we are going to need a variable to hold the number of completed rows.
+Working:
+       If we fidn a completed row, we will increase the variable by one.
+       Then we will clear the row and check the row above it.
+       If it is not completed,We will move that row down by the value the variable contains.
+
+
+18. Now, we need to check to see the game has ended.
+This is decided by the fact that if the new tetramino block is trying to over-ride a block that is already placed at the top of the gird, then it is game over.
+
+
+19. The Game Logic is complete. And now, we can add a UI for the user to inetract, show the next/upcoming block, Score, etc.
+The UI consists of several components:
+       i. A background that serves as a canvas on which all the game elements are drawn.
+       ii. A title text element for displaying the score, a rounded rectangle container to display the score value and a text element for rendering the actual score value.
+       iii. A title text element for displaying the upcoming shape, a rounded rectangle container to display the next shape and the actual next block shape itself.
+       iv. A title text element for showing "Game Over" when it reaches the game end logic.
+these elements work together to create the UI for the game, providing information on the score, the next shape, and the "Game Over" condition.
+
+
+20. To display text in raylib's graphics:
+       i. Load a font - Using LoadFontEx() function of the raylib framework.
+       ii. Display text with the loaded font - Using DrawTextEx() function of the raylib framework.
+
+
+21. Next is to add the scoring system for the game. Our scoring system includes:
+       i. 100 points for a single line clear.
+       ii. 300 points for double line clear.
+       iii. 450 points for triple line clear.
+       iv. 1 point for each move down by the player.
+
+
+22. Score variable is a dynamic variable i.e., it changes as the game progresses.So, the amount of pixels(its size) it occupies varies as the score increases.
+So, required calculations should be done to place the score value right in the middle of box created for the scorecard.
+We first use the sprintf() of the <iostream> header file to store the score and then pass it to the renderer to render the text to the screen after the required calculations. 
+
+
+23. Next is to show the upcoming/next block inside the box/container intended for showing the next block that is in line.
+For this, we will work on the block class. We will use the draw method of the block class and introduce two arguments namely x and y offset that would be used to calculate the offset of the current and next block and draw them accordingly.
+
+
+24. For the last part, we will be adding the sound effects to the game. There are three/four sounds:
+       i.music.mp3 - for bgm music as long as the player keeps playing without "GAME OVER".
+       ii.rotate.mp3 - used when the player rotates the block.
+       iii.clear.mp3 - used when rows are cleared from the game.
+       iv.game_over.mp3(opt) - used when "GAME OVER".
+We can either implement the method for playing music in the game.cpp or in the GameClass.h/.cpp .
